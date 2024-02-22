@@ -1,0 +1,17 @@
+workspace = { members = ["hal", "pac", "rt"] }
+
+
+[package]
+name = "milkv-duo-rs"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+milkv-duo-hal = { path = "./hal" }
+panic-halt = "0.2.0"
+riscv = "0.11.1"
+
+milkv-duo-riscv-rt = { path = "./rt" }
+critical-section = "1.1.2"
+heapless = "0.8.0"
+

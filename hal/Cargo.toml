@@ -1,0 +1,12 @@
+[package]
+name = "milkv-duo-hal"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+critical-section = "1.1.2"
+embedded-hal = "1.0.0"
+embedded-io = "0.6.1"
+fugit = "0.3.7"
+milkv-duo-pac = { path = "../pac" }
+riscv = "0.11.1"
