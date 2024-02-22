@@ -1,0 +1,6 @@
+/target
+SG2002.svd.patched
+trash/
+Cargo.lock
+
+*.bin
