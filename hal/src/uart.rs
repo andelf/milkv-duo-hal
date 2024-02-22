@@ -59,7 +59,7 @@ impl Uart0 {
             // let len = uart.rfl.read() & 0b111111;
 
             let c = uart.thr().read().bits() as u8;
-            buf[i as usize] = c;
+            buf[i] = c;
             nread += 1;
             if c == until {
                 break;
