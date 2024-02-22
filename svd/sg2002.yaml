@@ -1,0 +1,19 @@
+_svd: "./SG2002.svd"
+
+_include:
+  - "./peripherals/uart.yaml"
+  - "./peripherals/gpio.yaml"
+
+_add:
+  IOBLK_G1:
+    derivedFrom: IOBLK_G10
+    baseAddress: 0x03001800
+  IOBLK_G7:
+    derivedFrom: IOBLK_G10
+    baseAddress: 0x03001900
+  IOBLK_G12:
+    derivedFrom: IOBLK_G10
+    baseAddress: 0x03001C00 # first is 0x0300_1C38
+  IOBLK_RTC:
+    derivedFrom: IOBLK_G10
+    baseAddress: 0x05027000

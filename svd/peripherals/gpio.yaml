@@ -1,0 +1,122 @@
+
+
+_add:
+  GPIO0:
+    groupName: UART
+    baseAddress: 0x03020000
+    addressBlock:
+      offset: 0x0
+      size: 0x1000
+      usage: registers
+    interrupts:
+      GPIO0:
+        description: "GPIO0 interrupt"
+        value: 76
+    registers:
+      DR:
+        addressOffset: 0x000
+        size: 32
+        description: "Data register"
+        access: "read-write"
+        resetValue: 0x0
+      DDR:
+        addressOffset: 0x004
+        size: 32
+        description: "Data direction register, 0: input 1: output"
+        access: "read-write"
+        resetValue: 0x0
+      INTEN:
+        addressOffset: 0x030
+        size: 32
+        description: "Interrupt enable register"
+        access: "read-write"
+        resetValue: 0x0
+      INTMASK:
+        addressOffset: 0x034
+        size: 32
+        description: "Interrupt mask register"
+        access: "read-write"
+        resetValue: 0x0
+      INTTYPE:
+        addressOffset: 0x038
+        size: 32
+        description: "Interrupt type register, 0: level, 1: edge"
+        access: "read-write"
+        resetValue: 0x0
+      INTPOLARITY:
+        addressOffset: 0x03C
+        size: 32
+        description: "Interrupt polarity register, 0: active low, 1: active high"
+        access: "read-write"
+        resetValue: 0x0
+      INTSTATUS:
+        addressOffset: 0x040
+        size: 32
+        description: "Interrupt status register"
+        access: "read-write"
+        resetValue: 0x0
+      RAWINTSTATUS:
+        addressOffset: 0x044
+        size: 32
+        description: "Raw interrupt status register (premasking bits)"
+        access: "read-write"
+        resetValue: 0x0
+      DEBOUNCE:
+        addressOffset: 0x048
+        size: 32
+        description: "Debounce enable register"
+        access: "read-write"
+        resetValue: 0x0
+      EOI:
+        addressOffset: 0x04c
+        size: 32
+        description: "End of interrupt register, write 1 to clear interrupt"
+        access: "read-write"
+        resetValue: 0x0
+      EXT:
+        addressOffset: 0x050
+        size: 32
+        description: "External port register"
+        access: "read-write"
+        resetValue: 0x0
+      LS_SYNC:
+        addressOffset: 0x060
+        size: 32
+        description: "Level-sensitive synchronization enable register"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          LS_SYNC:
+            bitOffset: 0
+            bitWidth: 1
+            description: "Level-sensitive synchronization enable"
+
+  GPIO1:
+    derivedFrom: GPIO0
+    baseAddress: 0x03021000
+    interrupts:
+      GPIO1:
+        description: "GPIO1 interrupt"
+        value: 77
+  GPIO2:
+    derivedFrom: GPIO0
+    baseAddress: 0x03022000
+    interrupts:
+      GPIO2:
+        description: "GPIO2 interrupt"
+        value: 78
+  GPIO3:
+    derivedFrom: GPIO0
+    baseAddress: 0x03023000
+    interrupts:
+      GPIO3:
+        description: "GPIO3 interrupt"
+        value: 79
+  PWR_GPIO:
+    derivedFrom: GPIO0
+    baseAddress: 0x05021000
+    interrupts:
+      PWR_GPIO:
+        description: "PWR_GPIO interrupt"
+        value: 86
+

@@ -1,0 +1,468 @@
+_add:
+  UART0:
+    groupName: UART
+    baseAddress: 0x04140000
+    addressBlock:
+      offset: 0x0
+      size: 0x1000
+      usage: registers
+    interrupts:
+      UART0:
+        description: "UART0 interrupt"
+        value: 60
+    registers:
+      RBR:
+        addressOffset: 0x0
+        size: 32
+        description: "Receiver Buffer Register"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          RBR:
+            bitOffset: 0
+            bitWidth: 8
+            description: "Received data"
+      THR:
+        addressOffset: 0x0
+        size: 32
+        description: "Transmitter Holding Register"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          THR:
+            bitOffset: 0
+            bitWidth: 8
+            description: "Data to be transmitted"
+      DLL:
+        addressOffset: 0x0
+        size: 32
+        description: "Divisor Latch Low"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          DLL:
+            bitOffset: 0
+            bitWidth: 8
+            description: "Divisor Latch Low"
+      IER:
+        addressOffset: 0x4
+        size: 32
+        description: "Interrupt Enable Register"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          ERBFI:
+            bitOffset: 0
+            bitWidth: 1
+            description: "Enable Received Data Available Interrupt"
+          ETBEI:
+            bitOffset: 1
+            bitWidth: 1
+            description: "Enable Transmitter Holding Register Empty Interrupt"
+          ELSI:
+            bitOffset: 2
+            bitWidth: 1
+            description: "Enable Receiver Line Status Interrupt"
+          EDSSI:
+            bitOffset: 3
+            bitWidth: 1
+            description: "Enable Modem Status Interrupt"
+          EIT:
+            bitOffset: 7
+            bitWidth: 1
+            description: Programmable THRE Interrupt Mode Enable
+      DLH:
+        addressOffset: 0x4
+        size: 32
+        description: "Divisor Latch High"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          DLH:
+            bitOffset: 0
+            bitWidth: 8
+            description: "Divisor Latch High"
+      FCR:
+        addressOffset: 0x8
+        size: 32
+        description: "FIFO Control Register"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          FIFOEN:
+            bitOffset: 0
+            bitWidth: 1
+            description: "FIFO Enable"
+          RXFIFORST:
+            bitOffset: 1
+            bitWidth: 1
+            description: "RX FIFO Reset"
+          TXFIFORST:
+            bitOffset: 2
+            bitWidth: 1
+            description: "TX FIFO Reset"
+          DMAMODE:
+            bitOffset: 3
+            bitWidth: 1
+            description: "DMA Mode"
+          TXEMPTYTRIG:
+            bitOffset: 4
+            bitWidth: 2
+            description: "TX Empty Trigger"
+          RXTRIG:
+            description: "RX Trigger"
+            bitOffset: 6
+            bitWidth: 2
+      IIR:
+        addressOffset: 0x8
+        size: 32
+        description: "Interrupt Identification Register"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          INTRID:
+            bitOffset: 0
+            bitWidth: 4
+            description: "Interrupt ID"
+          FIFOEN:
+            bitOffset: 6
+            bitWidth: 2
+            description: "FIFOs Enabled"
+      LCR:
+        addressOffset: 0xC
+        size: 32
+        description: "Line Control Register"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          WLS:
+            bitOffset: 0
+            bitWidth: 2
+            description: "Word Length Select"
+          STB:
+            bitOffset: 2
+            bitWidth: 1
+            description: "Number of Stop Bits"
+          PEN:
+            bitOffset: 3
+            bitWidth: 1
+            description: "Parity Enable"
+          EPS:
+            bitOffset: 4
+            bitWidth: 1
+            description: "Even Parity Select"
+          STICKPAR:
+            bitOffset: 5
+            bitWidth: 1
+            description: "Stick Parity"
+          BRK:
+            bitOffset: 6
+            bitWidth: 1
+            description: "Break Control"
+          DLAB:
+            bitOffset: 7
+            bitWidth: 1
+            description: "Divisor Latch Access Bit"
+      MCR:
+        addressOffset: 0x10
+        size: 32
+        description: "Modem Control Register"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          RTS:
+            bitOffset: 1
+            bitWidth: 1
+            description: "Request to Send"
+          AFCE:
+            bitOffset: 6
+            bitWidth: 1
+            description: "Auto Flow Control Enable"
+      LSR:
+        addressOffset: 0x14
+        size: 32
+        description: "Line Status Register"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          DR:
+            bitOffset: 0
+            bitWidth: 1
+            description: "Data Ready"
+          OE:
+            bitOffset: 1
+            bitWidth: 1
+            description: "Overrun Error"
+          PE:
+            bitOffset: 2
+            bitWidth: 1
+            description: "Parity Error"
+          FE:
+            bitOffset: 3
+            bitWidth: 1
+            description: "Framing Error"
+          BI:
+            bitOffset: 4
+            bitWidth: 1
+            description: "Break Interrupt"
+          THRE:
+            bitOffset: 5
+            bitWidth: 1
+            description: "Transmitter Holding Register Empty"
+      MSR:
+        addressOffset: 0x18
+        size: 32
+        description: "Modem Status Register"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          CTS:
+            bitOffset: 4
+            bitWidth: 1
+            description: "Clear to Send"
+          DSR:
+            bitOffset: 0
+            bitWidth: 1
+            description: "Data Clear to Send"
+      LPDLL:
+        addressOffset: 0x20
+        size: 32
+        description: "Low Power Divisor Latch Low"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          LPDLL:
+            bitOffset: 0
+            bitWidth: 8
+      LPDLH:
+        addressOffset: 0x24
+        size: 32
+        description: "Low Power Divisor Latch High"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          LPDLH:
+            bitOffset: 0
+            bitWidth: 8
+      SRBR:
+        addressOffset: 0x30
+        size: 32
+        description: "Shadow Receiver Buffer Register"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          SRBR:
+            bitOffset: 0
+            bitWidth: 8
+      STHR:
+        addressOffset: 0x30
+        size: 32
+        description: "Shadow Transmitter Holding Register"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          STHR:
+            bitOffset: 0
+            bitWidth: 8
+      FAR:
+        addressOffset: 0x70
+        size: 32
+        description: "FIFO Access Register"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          FAR:
+            bitOffset: 0
+            bitWidth: 8
+      TFR:
+        addressOffset: 0x74
+        size: 32
+        description: "FIFO Trigger Register"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          TFR:
+            bitOffset: 0
+            bitWidth: 8
+      RFW:
+        addressOffset: 0x78
+        size: 32
+        description: "FIFO RX Watermark"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          RFW:
+            bitOffset: 0
+            bitWidth: 8
+            description: "Receive FIFO Write Data"
+          RPE:
+            bitOffset: 8
+            bitWidth: 1
+            description: "Receive FIFO Parity Error"
+          RFE:
+            bitOffset: 9
+            bitWidth: 1
+            description: "Receive FIFO Frame Error"
+      USR:
+        addressOffset: 0x7C
+        size: 32
+        description: "UART Status Register"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          BUSY:
+            bitOffset: 0
+            bitWidth: 1
+            description: "UART Busy"
+          TFNF:
+            bitOffset: 1
+            bitWidth: 1
+            description: "Transmit FIFO Not Full"
+          TFE:
+            bitOffset: 2
+            bitWidth: 1
+            description: "Transmit FIFO Empty"
+          RFNE:
+            bitOffset: 3
+            bitWidth: 1
+            description: "Receive FIFO Not Empty"
+          RFF:
+            bitOffset: 4
+            bitWidth: 1
+            description: "Receive FIFO Full"
+      TFL:
+        addressOffset: 0x80
+        size: 32
+        description: "Transmit FIFO Level"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          TFL:
+            bitOffset: 0
+            bitWidth: 8
+      SRR:
+        addressOffset: 0x88
+        size: 32
+        description: "Software Reset Register"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          SRR:
+            bitOffset: 0
+            bitWidth: 8
+      SRTS:
+        addressOffset: 0x8C
+        size: 32
+        description: "Shadow Request to Send"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          SRTS:
+            bitOffset: 0
+            bitWidth: 1
+      SBCR:
+        addressOffset: 0x90
+        size: 32
+        description: "Shadow Break Control Register"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          SBCR:
+            bitOffset: 0
+            bitWidth: 1
+      SDMAM:
+        addressOffset: 0x94
+        size: 32
+        description: "Shadow DMA Mode"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          SDMAM:
+            bitOffset: 0
+            bitWidth: 1
+      SFE:
+        addressOffset: 0x98
+        size: 32
+        description: "Shadow FIFO Enable"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          SFE:
+            bitOffset: 0
+            bitWidth: 1
+      SRT:
+        addressOffset: 0x9C
+        size: 32
+        description: "Shadow RCVR Trigger"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          SRT:
+            bitOffset: 0
+            bitWidth: 2
+      STET:
+        addressOffset: 0xA0
+        size: 32
+        description: "Shadow TX Empty Trigger"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          STET:
+            bitOffset: 0
+            bitWidth: 2
+      HTX:
+        addressOffset: 0xA4
+        size: 32
+        description: "Halt TX"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          HTX:
+            bitOffset: 0
+            bitWidth: 1
+      DMASA:
+        addressOffset: 0xA8
+        size: 32
+        description: "DMA Software Acknowledge"
+        access: "read-write"
+        resetValue: 0x0
+        fields:
+          DMASA:
+            bitOffset: 0
+            bitWidth: 1
+
+  UART1:
+    derivedFrom: UART0
+    baseAddress: 0x04150000
+    interrupts:
+      UART1:
+        description: "UART1 interrupt"
+        value: 61
+  UART2:
+    derivedFrom: UART0
+    baseAddress: 0x04160000
+    interrupts:
+      UART2:
+        description: "UART2 interrupt"
+        value: 62
+  UART3:
+    derivedFrom: UART0
+    baseAddress: 0x04170000
+    interrupts:
+      UART3:
+        description: "UART3 interrupt"
+        value: 63
+  UART4:
+    derivedFrom: UART0
+    baseAddress: 0x041C0000
+    interrupts:
+      UART4:
+        description: "UART4 interrupt"
+        value: 64
+  RTCSYS_UART:
+    derivedFrom: UART0
+    baseAddress: 0x05022000
+    interrupts:
+      UART_RTC:
+        description: "RTCSYS UART interrupt"
+        value: 87
