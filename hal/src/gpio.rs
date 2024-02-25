@@ -90,6 +90,32 @@ impl<'d> Flex<'d> {
             .dr()
             .modify(|r, w| unsafe { w.bits(r.bits() & !(1 << self.pin.pin())) });
     }
+
+    #[inline]
+    pub fn set_level(&mut self, level: Level) {
+        match level {
+            Level::Low => self.set_low(),
+            Level::High => self.set_high(),
+        }
+    }
+
+    #[inline]
+    pub fn is_set_low(&self) -> bool {
+        self.pin.block().dr().read().bits() & (1 << self.pin.pin()) == 0
+    }
+
+    #[inline]
+    pub fn is_set_high(&self) -> bool {
+        !self.is_set_low()
+    }
+
+    #[inline]
+    pub fn toggle(&mut self) {
+        self.pin
+            .block()
+            .dr()
+            .modify(|r, w| unsafe { w.bits(r.bits() ^ (1 << self.pin.pin())) });
+    }
 }
 
 pub(crate) mod sealed {
