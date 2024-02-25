@@ -1,6 +1,10 @@
 # MilkV-Duo-hal
 
-**NOTE**: This is not a kv store. :P
+The Rust HAL(Hardware Access Layer) for the MilkV Duo board.
+
+- Only MilkV Duo 250M is supported
+- This HAL works the same level as u-boot(After OpenSBI)
+- This HAL works under s-mode
 
 ## How To Use
 
