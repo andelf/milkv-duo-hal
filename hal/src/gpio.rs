@@ -61,10 +61,17 @@ impl<'d> Flex<'d> {
     pub fn new(pin: impl Peripheral<P = impl Pin> + 'd) -> Self {
         into_ref!(pin);
 
-        // TODO IOC selection
-        pin.set_alt_function(0); // FIXME, some gpio are not 0
+        pin.set_alt_function(0); // FIXME, some gpio are not alt 0
 
         Self { pin: pin.map_into() }
+    }
+
+    #[inline]
+    pub fn set_as_input(&mut self) {
+        self.pin
+            .block()
+            .ddr()
+            .modify(|r, w| unsafe { w.bits(r.bits() & !(1 << self.pin.pin())) });
     }
 
     #[inline]
