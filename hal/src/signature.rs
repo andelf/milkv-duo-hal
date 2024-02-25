@@ -121,7 +121,6 @@ pub fn read_chip_info() -> ChipInfo {
     let mut ddr_capacity = DDR_Capacity::Unknown;
     let mut ddr_type = DDR_Type::DDR3;
     let mut package = ChipPackage::Unknown;
-    let mut chip_id = 0;
 
     match pkg_type {
         0x0 => {
@@ -170,7 +169,7 @@ pub fn read_chip_info() -> ChipInfo {
         _ => {}
     }
 
-    chip_id = match (ddr_capacity, package) {
+    let chip_id = match (ddr_capacity, package) {
         (DDR_Capacity::_512M, ChipPackage::QFN) => 0x1810c,
         (DDR_Capacity::_512M, ChipPackage::BGA) => 0x1810f,
         (DDR_Capacity::_1G, ChipPackage::QFN) => 0x1811c,
