@@ -2,7 +2,8 @@ OUTPUT_ARCH(riscv)
 ENTRY(_start)
 MEMORY {
     /* reused TPU_SRAM, 220KB */
-    SRAM : ORIGIN = 0x0C000000, LENGTH = 0x37000
+    /* SRAM : ORIGIN = 0x0C000000, LENGTH = 0x37000 */
+    SRAM : ORIGIN = 0x80200000, LENGTH = 0xc0000
 }
 SECTIONS {
     .text : ALIGN(8) {

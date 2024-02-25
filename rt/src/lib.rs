@@ -2,7 +2,8 @@
 #![feature(naked_functions, asm_const)]
 
 use core::arch::asm;
-const LEN_STACK: usize = 1 * 1024;
+const LEN_STACK: usize = 1 * 1024 * 1024;
+const STACK_START: usize = 0x80000000 + 240 * 1024 * 1024;
 
 pub use riscv_rt_macros::entry;
 
@@ -13,20 +14,21 @@ pub struct Stack<const N: usize>([u8; N]);
 #[link_section = ".text.entry"]
 #[export_name = "_start"]
 unsafe extern "C" fn entry() -> ! {
-    #[link_section = ".bss.uninit"]
-    static mut STACK: Stack<LEN_STACK> = Stack([0; LEN_STACK]);
+    //#[link_section = ".bss.uninit"]
+    //static mut STACK: Stack<LEN_STACK> = Stack([0; LEN_STACK]);
+
     asm!(
         ".option push
         .option arch, -c
             j       1f
-        .option pop",
-        ".word   0",  // resvered
-        ".word   0",  // BL2 MSID
-        ".word   0",  // BL2 version
-        ".word   0",  //
+        .option pop",          // Fake header for OpenSBI
+        ".word   0x33334c42",  // BL33
+        ".word   0xdeadbeea",  // BL2 MSID
+        ".word   0xdeadbeeb",  // BL2 version
+        ".word   0x80200000",  // Load address
         ".word   0",
-        ".word   0",
-        ".word   0",
+        ".word   0xdeadbeec",
+        ".word   0x0001a011",
         "1:",
         // configure mxstatus register
         // PM = 0b11 (Current privilege mode is Machine mode)
@@ -40,13 +42,13 @@ unsafe extern "C" fn entry() -> ! {
         // PMDM = 0 (allow performance counter on M-mode)
         // PMDS = 0 (allow performance counter on S-mode)
         // PMDU = 0 (allow performance counter on U-mode)
-        "   li      t0, 0xc0638000
-            csrw    0x7c0, t0",
+        //"   li      t0, 0xc0638000
+        //    csrw    0x7c0, t0",
         // invalid I-cache, D-cache, BHT and BTB by writing mcor register
-        "   li      t2, 0x30013
-            csrw    0x7c2, t2",
+        //"   li      t2, 0x30013
+        //    csrw    0x7c2, t2",
         // enable I-cache, D-cache by mhcr register
-        "   csrsi   0x7c1, 0x3",
+        //"   csrsi   0x7c1, 0x3",
         // load stack address
         "   la      sp, {stack}
             li      t0, {hart_stack_size}
@@ -60,7 +62,7 @@ unsafe extern "C" fn entry() -> ! {
         	j    	1b
     	1:",
         "   call    {main}",
-        stack = sym STACK,
+        stack = const STACK_START,
         hart_stack_size = const LEN_STACK,
         main = sym main,
         options(noreturn)

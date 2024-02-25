@@ -3,11 +3,12 @@
 pub use milkv_duo_pac as pac;
 pub use peripheral::*;
 
+pub mod gpio;
 mod peripheral;
 pub mod peripherals;
 pub mod uart;
 
-pub mod ddr;
+// pub mod ddr;
 pub mod signature;
 
 pub mod rom_api {
@@ -40,4 +41,8 @@ pub mod rom_api {
             }
         }
     }
+}
+
+pub fn init() -> peripherals::Peripherals {
+    peripherals::Peripherals::take()
 }

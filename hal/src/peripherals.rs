@@ -34,10 +34,11 @@ crate::peripherals! {
     PIN_21 <= virtual,
     PIN_22 <= virtual,
 
+    PIN_25 <= virtual, // LED
+
     PIN_26 <= virtual, // ADC1
     PIN_27 <= virtual, // ADC2
 
-    PIN_LED <= virtual,
 
     PIN_RUN <= virtual,
 
