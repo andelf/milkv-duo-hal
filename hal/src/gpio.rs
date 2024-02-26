@@ -327,12 +327,11 @@ impl_pin!(PIN_22, 0x88 / 4, 13, 0x0C / 4, 4, 4); // 3 : PWR_GPIO[4], PWR_SEQ2
 
 impl_pin!(PIN_25, 0xAC / 4, 13, 0x34 / 4, 4, 2); // 0: PWR_GPIO[2], LED
 
-impl_pin!(PIN_26, 0xF8 / 4, 1, 0x10 / 4, 1, 3); // 3 : XGPIOB[3], ADC1
-impl_pin!(PIN_27, 0x108 / 4, 1, 0x20 / 4, 1, 6); // 3 : XGPIOB[6], USB_VBUS_DET
-
+// Audio pins
 impl_pin!(PIN_MIC_IN, 0x1BC / 4, 0, 0x00 / 4, 2, 23); // no ioblk
 impl_pin!(PIN_AUDIO_OUT, 0x1C8 / 4, 0, 0x00 / 4, 2, 24); // no ioblk
 
+// SD card, SDIO0
 impl_pin!(PIN_SD0_CLK, 0x1C / 4, 10, 0x00 / 4, 0, 7); // 3 : XGPIOA[7], SD0_CLK
 impl_pin!(PIN_SD0_CMD, 0x20 / 4, 10, 0x04 / 4, 0, 8); // 3 : XGPIOA[8], SD0_CMD
 impl_pin!(PIN_SD0_D0, 0x24 / 4, 10, 0x08 / 4, 0, 9); // 3 : XGPIOA[9], SD0_D0
@@ -341,4 +340,9 @@ impl_pin!(PIN_SD0_D2, 0x2C / 4, 10, 0x10 / 4, 0, 11); // 3 : XGPIOA[11], SD0_D2
 impl_pin!(PIN_SD0_D3, 0x30 / 4, 10, 0x14 / 4, 0, 12); // 3 : XGPIOA[12], SD0_D3
 impl_pin!(PIN_SD0_CD, 0x34 / 4, 7, 0x00 / 4, 0, 13); // 3 : XGPIOA[13], SD0_CD
 
+// ARM RV SWITCH pin, pulled up externally
 impl_pin!(PIN_ARM_RV_SWITCH, 0x1CC / 4, 12, 0x8C / 4, 1, 23); // 3 : XGPIOB[23], ARM_RV_SWITCH, GPIO_RTX___EPHY_RTX
+
+// 1V8 domain
+impl_pin!(PIN_26, 0xF8 / 4, 1, 0x10 / 4, 1, 3); // 3 : XGPIOB[3], ADC1
+impl_pin!(PIN_27, 0x108 / 4, 1, 0x20 / 4, 1, 6); // 3 : XGPIOB[6], ADC2, USB_VBUS_DET
