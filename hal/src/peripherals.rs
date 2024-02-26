@@ -37,10 +37,22 @@ crate::peripherals! {
     PIN_25 <= virtual, // LED
 
     PIN_26 <= virtual, // ADC1
-    PIN_27 <= virtual, // ADC2
+    PIN_27 <= virtual, // USB_VBUS_DET
 
+    PIN_MIC_IN <= virtual,
+    PIN_AUDIO_OUT <= virtual,
 
-    PIN_RUN <= virtual,
+    // CSI
+    PIN_MIPI0_DN0 <= virtual,
+    PIN_MIPI0_DP0 <= virtual,
+    PIN_MIPI0_DN1 <= virtual,
+    PIN_MIPI0_DP1 <= virtual,
+    PIN_MIPI0_CKN <= virtual,
+    PIN_MIPI0_CKP <= virtual,
+    PIN_SENSOR_RSTN <= virtual,
+    PIN_SENSOR_CLK <= virtual,
+
+    PIN_ARM_RV_SWITCH <= virtual,
 
     PIN_SD0_CD <= virtual,
     PIN_SD0_D0 <= virtual,
@@ -49,7 +61,4 @@ crate::peripherals! {
     PIN_SD0_D3 <= virtual,
     PIN_SD0_CMD <= virtual,
     PIN_SD0_CLK <= virtual,
-
-
-
 }

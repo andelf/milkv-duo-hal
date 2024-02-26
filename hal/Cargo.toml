@@ -10,3 +10,4 @@ embedded-io = "0.6.1"
 fugit = "0.3.7"
 milkv-duo-pac = { path = "../pac" }
 riscv = "0.11.1"
+xuantie = "0.0.5"
