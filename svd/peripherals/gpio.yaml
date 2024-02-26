@@ -73,7 +73,7 @@ _add:
         description: "End of interrupt register, write 1 to clear interrupt"
         access: "read-write"
         resetValue: 0x0
-      EXT:
+      EXT_PORT:
         addressOffset: 0x050
         size: 32
         description: "External port register"

@@ -1746,9 +1746,9 @@ module"]
         pub type BI_R = crate::BitReader;
         #[doc = "Field `BI` writer - Break Interrupt"]
         pub type BI_W<'a, REG> = crate::BitWriter<'a, REG>;
-        #[doc = "Field `THRE` reader - "]
+        #[doc = "Field `THRE` reader - Transmitter Holding Register Empty"]
         pub type THRE_R = crate::BitReader;
-        #[doc = "Field `THRE` writer - "]
+        #[doc = "Field `THRE` writer - Transmitter Holding Register Empty"]
         pub type THRE_W<'a, REG> = crate::BitWriter<'a, REG>;
         impl R {
             #[doc = "Bit 0 - Data Ready"]
@@ -1776,7 +1776,7 @@ module"]
             pub fn bi(&self) -> BI_R {
                 BI_R::new(((self.bits >> 4) & 1) != 0)
             }
-            #[doc = "Bit 5"]
+            #[doc = "Bit 5 - Transmitter Holding Register Empty"]
             #[inline(always)]
             pub fn thre(&self) -> THRE_R {
                 THRE_R::new(((self.bits >> 5) & 1) != 0)
@@ -1813,7 +1813,7 @@ module"]
             pub fn bi(&mut self) -> BI_W<LSR_SPEC> {
                 BI_W::new(self, 4)
             }
-            #[doc = "Bit 5"]
+            #[doc = "Bit 5 - Transmitter Holding Register Empty"]
             #[inline(always)]
             #[must_use]
             pub fn thre(&mut self) -> THRE_W<LSR_SPEC> {
@@ -3276,7 +3276,7 @@ pub mod gpio0 {
         rawintstatus: RAWINTSTATUS,
         debounce: DEBOUNCE,
         eoi: EOI,
-        ext: EXT,
+        ext_port: EXT_PORT,
         _reserved11: [u8; 0x0c],
         ls_sync: LS_SYNC,
     }
@@ -3333,8 +3333,8 @@ pub mod gpio0 {
         }
         #[doc = "0x50 - External port register"]
         #[inline(always)]
-        pub const fn ext(&self) -> &EXT {
-            &self.ext
+        pub const fn ext_port(&self) -> &EXT_PORT {
+            &self.ext_port
         }
         #[doc = "0x60 - Level-sensitive synchronization enable register"]
         #[inline(always)]
@@ -3822,21 +3822,21 @@ module"]
             const RESET_VALUE: u32 = 0;
         }
     }
-    #[doc = "EXT (rw) register accessor: External port register\n\nYou can [`read`](crate::generic::Reg::read) this register and get [`ext::R`].  You can [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`write_with_zero`](crate::generic::Reg::write_with_zero) this register using [`ext::W`]. You can also [`modify`](crate::generic::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@ext`]
+    #[doc = "EXT_PORT (rw) register accessor: External port register\n\nYou can [`read`](crate::generic::Reg::read) this register and get [`ext_port::R`].  You can [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`write_with_zero`](crate::generic::Reg::write_with_zero) this register using [`ext_port::W`]. You can also [`modify`](crate::generic::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@ext_port`]
 module"]
-    pub type EXT = crate::Reg<ext::EXT_SPEC>;
+    pub type EXT_PORT = crate::Reg<ext_port::EXT_PORT_SPEC>;
     #[doc = "External port register"]
-    pub mod ext {
-        #[doc = "Register `EXT` reader"]
-        pub type R = crate::R<EXT_SPEC>;
-        #[doc = "Register `EXT` writer"]
-        pub type W = crate::W<EXT_SPEC>;
+    pub mod ext_port {
+        #[doc = "Register `EXT_PORT` reader"]
+        pub type R = crate::R<EXT_PORT_SPEC>;
+        #[doc = "Register `EXT_PORT` writer"]
+        pub type W = crate::W<EXT_PORT_SPEC>;
         impl core::fmt::Debug for R {
             fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
                 write!(f, "{}", self.bits())
             }
         }
-        impl core::fmt::Debug for crate::generic::Reg<EXT_SPEC> {
+        impl core::fmt::Debug for crate::generic::Reg<EXT_PORT_SPEC> {
             fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
                 core::fmt::Debug::fmt(&self.read(), f)
             }
@@ -3853,20 +3853,20 @@ module"]
                 self
             }
         }
-        #[doc = "External port register\n\nYou can [`read`](crate::generic::Reg::read) this register and get [`ext::R`](R).  You can [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`write_with_zero`](crate::generic::Reg::write_with_zero) this register using [`ext::W`](W). You can also [`modify`](crate::generic::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
-        pub struct EXT_SPEC;
-        impl crate::RegisterSpec for EXT_SPEC {
+        #[doc = "External port register\n\nYou can [`read`](crate::generic::Reg::read) this register and get [`ext_port::R`](R).  You can [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`write_with_zero`](crate::generic::Reg::write_with_zero) this register using [`ext_port::W`](W). You can also [`modify`](crate::generic::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        pub struct EXT_PORT_SPEC;
+        impl crate::RegisterSpec for EXT_PORT_SPEC {
             type Ux = u32;
         }
-        #[doc = "`read()` method returns [`ext::R`](R) reader structure"]
-        impl crate::Readable for EXT_SPEC {}
-        #[doc = "`write(|w| ..)` method takes [`ext::W`](W) writer structure"]
-        impl crate::Writable for EXT_SPEC {
+        #[doc = "`read()` method returns [`ext_port::R`](R) reader structure"]
+        impl crate::Readable for EXT_PORT_SPEC {}
+        #[doc = "`write(|w| ..)` method takes [`ext_port::W`](W) writer structure"]
+        impl crate::Writable for EXT_PORT_SPEC {
             const ZERO_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
             const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
         }
-        #[doc = "`reset()` method sets EXT to value 0"]
-        impl crate::Resettable for EXT_SPEC {
+        #[doc = "`reset()` method sets EXT_PORT to value 0"]
+        impl crate::Resettable for EXT_PORT_SPEC {
             const RESET_VALUE: u32 = 0;
         }
     }
