@@ -9,6 +9,7 @@ pub mod peripherals;
 pub mod uart;
 
 // pub mod ddr;
+pub mod sbi;
 pub mod signature;
 
 pub mod rom_api {
