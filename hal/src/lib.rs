@@ -3,14 +3,18 @@
 pub use milkv_duo_pac as pac;
 pub use peripheral::*;
 
+// macros come first
+mod traits;
+
 pub mod gpio;
-mod peripheral;
-pub mod peripherals;
 pub mod uart;
 
 // pub mod ddr;
-pub mod sbi;
 pub mod signature;
+
+mod peripheral;
+pub mod peripherals;
+pub mod sbi;
 
 pub mod rom_api {
     extern "C" {

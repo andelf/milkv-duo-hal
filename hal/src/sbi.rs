@@ -27,9 +27,15 @@ fn sbi_call(eid: usize, fid: usize, arg0: usize, arg1: usize, arg2: usize) -> Sb
     SbiRet { error, value }
 }
 
-pub fn get_sbi_specification_version() -> SbiRet {
+pub fn get_specification_version() -> SbiRet {
     const FID: usize = 0;
     sbi_call(EID_BASE, FID, 0, 0, 0)
+}
+
+pub fn probe_extension(ext_id: usize) -> bool {
+    const FID: usize = 3;
+    let ret = sbi_call(EID_BASE, FID, ext_id, 0, 0);
+    ret.error == 0 && ret.value == 1
 }
 
 const SBI_SET_TIMER: usize = 0;
