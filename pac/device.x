@@ -8,5 +8,5 @@ PROVIDE(GPIO1 = DefaultHandler);
 PROVIDE(GPIO2 = DefaultHandler);
 PROVIDE(GPIO3 = DefaultHandler);
 PROVIDE(PWR_GPIO = DefaultHandler);
-PROVIDE(UART_RTC = DefaultHandler);
+PROVIDE(PWR_UART = DefaultHandler);
 

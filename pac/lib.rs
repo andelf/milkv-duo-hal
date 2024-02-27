@@ -23,7 +23,7 @@ extern "C" {
     fn GPIO2();
     fn GPIO3();
     fn PWR_GPIO();
-    fn UART_RTC();
+    fn PWR_UART();
 }
 #[doc(hidden)]
 #[repr(C)]
@@ -122,7 +122,7 @@ pub static __EXTERNAL_INTERRUPTS: [Vector; 88] = [
     Vector { _reserved: 0 },
     Vector { _reserved: 0 },
     Vector { _handler: PWR_GPIO },
-    Vector { _handler: UART_RTC },
+    Vector { _handler: PWR_UART },
 ];
 #[doc(hidden)]
 pub mod interrupt {
@@ -151,7 +151,7 @@ pub mod interrupt {
         #[doc = "86 - PWR_GPIO interrupt"]
         PWR_GPIO = 86,
         #[doc = "87 - RTCSYS UART interrupt"]
-        UART_RTC = 87,
+        PWR_UART = 87,
     }
     #[doc = r" TryFromInterruptError"]
     #[derive(Debug, Copy, Clone)]
@@ -171,7 +171,7 @@ pub mod interrupt {
                 78 => Ok(Interrupt::GPIO2),
                 79 => Ok(Interrupt::GPIO3),
                 86 => Ok(Interrupt::PWR_GPIO),
-                87 => Ok(Interrupt::UART_RTC),
+                87 => Ok(Interrupt::PWR_UART),
                 _ => Err(TryFromInterruptError(())),
             }
         }
@@ -267,6 +267,7 @@ impl core::fmt::Debug for PINMUX {
 pub mod pinmux {
     #[doc = r"Register block"]
     #[repr(C)]
+    #[derive(Debug)]
     pub struct RegisterBlock {
         pad: [PAD; 120],
     }
@@ -290,6 +291,7 @@ pub mod pinmux {
     pub mod pad {
         #[doc = r"Register block"]
         #[repr(C)]
+        #[derive(Debug)]
         pub struct PAD {
             func_sel: FUNC_SEL,
         }
@@ -318,6 +320,18 @@ module"]
                 #[inline(always)]
                 pub fn value(&self) -> VALUE_R {
                     VALUE_R::new((self.bits & 0x0f) as u8)
+                }
+            }
+            impl core::fmt::Debug for R {
+                fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                    f.debug_struct("FUNC_SEL")
+                        .field("value", &format_args!("{}", self.value().bits()))
+                        .finish()
+                }
+            }
+            impl core::fmt::Debug for crate::generic::Reg<FUNC_SEL_SPEC> {
+                fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                    core::fmt::Debug::fmt(&self.read(), f)
                 }
             }
             impl W {
@@ -403,6 +417,7 @@ impl core::fmt::Debug for IOBLK_G10 {
 pub mod ioblk_g10 {
     #[doc = r"Register block"]
     #[repr(C)]
+    #[derive(Debug)]
     pub struct RegisterBlock {
         pin: [PIN; 60],
     }
@@ -426,6 +441,7 @@ pub mod ioblk_g10 {
     pub mod pin {
         #[doc = r"Register block"]
         #[repr(C)]
+        #[derive(Debug)]
         pub struct PIN {
             iocfg: IOCFG,
         }
@@ -499,6 +515,23 @@ module"]
                 #[inline(always)]
                 pub fn sl(&self) -> SL_R {
                     SL_R::new(((self.bits >> 11) & 1) != 0)
+                }
+            }
+            impl core::fmt::Debug for R {
+                fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                    f.debug_struct("IOCFG")
+                        .field("pu", &format_args!("{}", self.pu().bit()))
+                        .field("pd", &format_args!("{}", self.pd().bit()))
+                        .field("ds", &format_args!("{}", self.ds().bits()))
+                        .field("st", &format_args!("{}", self.st().bits()))
+                        .field("he", &format_args!("{}", self.he().bit()))
+                        .field("sl", &format_args!("{}", self.sl().bit()))
+                        .finish()
+                }
+            }
+            impl core::fmt::Debug for crate::generic::Reg<IOCFG_SPEC> {
+                fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                    core::fmt::Debug::fmt(&self.read(), f)
                 }
             }
             impl W {
@@ -790,6 +823,7 @@ impl core::fmt::Debug for UART0 {
 pub mod uart0 {
     #[doc = r"Register block"]
     #[repr(C)]
+    #[derive(Debug)]
     pub struct RegisterBlock {
         _reserved_0_dll: [u8; 0x04],
         _reserved_1_dlh: [u8; 0x04],
@@ -987,6 +1021,18 @@ module"]
                 RBR_R::new((self.bits & 0xff) as u8)
             }
         }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("RBR")
+                    .field("rbr", &format_args!("{}", self.rbr().bits()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<RBR_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
+            }
+        }
         impl W {
             #[doc = "Bits 0:7 - Received data"]
             #[inline(always)]
@@ -1040,6 +1086,18 @@ module"]
             #[inline(always)]
             pub fn thr(&self) -> THR_R {
                 THR_R::new((self.bits & 0xff) as u8)
+            }
+        }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("THR")
+                    .field("thr", &format_args!("{}", self.thr().bits()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<THR_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
             }
         }
         impl W {
@@ -1097,6 +1155,18 @@ module"]
                 DLL_R::new((self.bits & 0xff) as u8)
             }
         }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("DLL")
+                    .field("dll", &format_args!("{}", self.dll().bits()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<DLL_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
+            }
+        }
         impl W {
             #[doc = "Bits 0:7 - Divisor Latch Low"]
             #[inline(always)]
@@ -1141,18 +1211,18 @@ module"]
         pub type R = crate::R<IER_SPEC>;
         #[doc = "Register `IER` writer"]
         pub type W = crate::W<IER_SPEC>;
-        #[doc = "Field `ERBFI` reader - Enable Received Data Available Interrupt"]
-        pub type ERBFI_R = crate::BitReader;
-        #[doc = "Field `ERBFI` writer - Enable Received Data Available Interrupt"]
-        pub type ERBFI_W<'a, REG> = crate::BitWriter<'a, REG>;
-        #[doc = "Field `ETBEI` reader - Enable Transmitter Holding Register Empty Interrupt"]
-        pub type ETBEI_R = crate::BitReader;
-        #[doc = "Field `ETBEI` writer - Enable Transmitter Holding Register Empty Interrupt"]
-        pub type ETBEI_W<'a, REG> = crate::BitWriter<'a, REG>;
-        #[doc = "Field `ELSI` reader - Enable Receiver Line Status Interrupt"]
-        pub type ELSI_R = crate::BitReader;
-        #[doc = "Field `ELSI` writer - Enable Receiver Line Status Interrupt"]
-        pub type ELSI_W<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `RDI` reader - Enable Received Data Available Interrupt"]
+        pub type RDI_R = crate::BitReader;
+        #[doc = "Field `RDI` writer - Enable Received Data Available Interrupt"]
+        pub type RDI_W<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `THRI` reader - Enable Transmitter Holding Register Empty Interrupt"]
+        pub type THRI_R = crate::BitReader;
+        #[doc = "Field `THRI` writer - Enable Transmitter Holding Register Empty Interrupt"]
+        pub type THRI_W<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `RLSI` reader - Enable Receiver Line Status Interrupt"]
+        pub type RLSI_R = crate::BitReader;
+        #[doc = "Field `RLSI` writer - Enable Receiver Line Status Interrupt"]
+        pub type RLSI_W<'a, REG> = crate::BitWriter<'a, REG>;
         #[doc = "Field `EDSSI` reader - Enable Modem Status Interrupt"]
         pub type EDSSI_R = crate::BitReader;
         #[doc = "Field `EDSSI` writer - Enable Modem Status Interrupt"]
@@ -1164,18 +1234,18 @@ module"]
         impl R {
             #[doc = "Bit 0 - Enable Received Data Available Interrupt"]
             #[inline(always)]
-            pub fn erbfi(&self) -> ERBFI_R {
-                ERBFI_R::new((self.bits & 1) != 0)
+            pub fn rdi(&self) -> RDI_R {
+                RDI_R::new((self.bits & 1) != 0)
             }
             #[doc = "Bit 1 - Enable Transmitter Holding Register Empty Interrupt"]
             #[inline(always)]
-            pub fn etbei(&self) -> ETBEI_R {
-                ETBEI_R::new(((self.bits >> 1) & 1) != 0)
+            pub fn thri(&self) -> THRI_R {
+                THRI_R::new(((self.bits >> 1) & 1) != 0)
             }
             #[doc = "Bit 2 - Enable Receiver Line Status Interrupt"]
             #[inline(always)]
-            pub fn elsi(&self) -> ELSI_R {
-                ELSI_R::new(((self.bits >> 2) & 1) != 0)
+            pub fn rlsi(&self) -> RLSI_R {
+                RLSI_R::new(((self.bits >> 2) & 1) != 0)
             }
             #[doc = "Bit 3 - Enable Modem Status Interrupt"]
             #[inline(always)]
@@ -1188,24 +1258,40 @@ module"]
                 EIT_R::new(((self.bits >> 7) & 1) != 0)
             }
         }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("IER")
+                    .field("rdi", &format_args!("{}", self.rdi().bit()))
+                    .field("thri", &format_args!("{}", self.thri().bit()))
+                    .field("rlsi", &format_args!("{}", self.rlsi().bit()))
+                    .field("edssi", &format_args!("{}", self.edssi().bit()))
+                    .field("eit", &format_args!("{}", self.eit().bit()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<IER_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
+            }
+        }
         impl W {
             #[doc = "Bit 0 - Enable Received Data Available Interrupt"]
             #[inline(always)]
             #[must_use]
-            pub fn erbfi(&mut self) -> ERBFI_W<IER_SPEC> {
-                ERBFI_W::new(self, 0)
+            pub fn rdi(&mut self) -> RDI_W<IER_SPEC> {
+                RDI_W::new(self, 0)
             }
             #[doc = "Bit 1 - Enable Transmitter Holding Register Empty Interrupt"]
             #[inline(always)]
             #[must_use]
-            pub fn etbei(&mut self) -> ETBEI_W<IER_SPEC> {
-                ETBEI_W::new(self, 1)
+            pub fn thri(&mut self) -> THRI_W<IER_SPEC> {
+                THRI_W::new(self, 1)
             }
             #[doc = "Bit 2 - Enable Receiver Line Status Interrupt"]
             #[inline(always)]
             #[must_use]
-            pub fn elsi(&mut self) -> ELSI_W<IER_SPEC> {
-                ELSI_W::new(self, 2)
+            pub fn rlsi(&mut self) -> RLSI_W<IER_SPEC> {
+                RLSI_W::new(self, 2)
             }
             #[doc = "Bit 3 - Enable Modem Status Interrupt"]
             #[inline(always)]
@@ -1267,6 +1353,18 @@ module"]
                 DLH_R::new((self.bits & 0xff) as u8)
             }
         }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("DLH")
+                    .field("dlh", &format_args!("{}", self.dlh().bits()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<DLH_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
+            }
+        }
         impl W {
             #[doc = "Bits 0:7 - Divisor Latch High"]
             #[inline(always)]
@@ -1302,69 +1400,28 @@ module"]
             const RESET_VALUE: u32 = 0;
         }
     }
-    #[doc = "FCR (rw) register accessor: FIFO Control Register\n\nYou can [`read`](crate::generic::Reg::read) this register and get [`fcr::R`].  You can [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`write_with_zero`](crate::generic::Reg::write_with_zero) this register using [`fcr::W`]. You can also [`modify`](crate::generic::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@fcr`]
+    #[doc = "FCR (w) register accessor: FIFO Control Register\n\nYou can [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`write_with_zero`](crate::generic::Reg::write_with_zero) this register using [`fcr::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@fcr`]
 module"]
     pub type FCR = crate::Reg<fcr::FCR_SPEC>;
     #[doc = "FIFO Control Register"]
     pub mod fcr {
-        #[doc = "Register `FCR` reader"]
-        pub type R = crate::R<FCR_SPEC>;
         #[doc = "Register `FCR` writer"]
         pub type W = crate::W<FCR_SPEC>;
-        #[doc = "Field `FIFOEN` reader - FIFO Enable"]
-        pub type FIFOEN_R = crate::BitReader;
         #[doc = "Field `FIFOEN` writer - FIFO Enable"]
         pub type FIFOEN_W<'a, REG> = crate::BitWriter<'a, REG>;
-        #[doc = "Field `RXFIFORST` reader - RX FIFO Reset"]
-        pub type RXFIFORST_R = crate::BitReader;
-        #[doc = "Field `RXFIFORST` writer - RX FIFO Reset"]
-        pub type RXFIFORST_W<'a, REG> = crate::BitWriter<'a, REG>;
-        #[doc = "Field `TXFIFORST` reader - TX FIFO Reset"]
-        pub type TXFIFORST_R = crate::BitReader;
-        #[doc = "Field `TXFIFORST` writer - TX FIFO Reset"]
-        pub type TXFIFORST_W<'a, REG> = crate::BitWriter<'a, REG>;
-        #[doc = "Field `DMAMODE` reader - DMA Mode"]
-        pub type DMAMODE_R = crate::BitReader;
+        #[doc = "Field `RXSR` writer - Receiver Soft Reset"]
+        pub type RXSR_W<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `TXSR` writer - Transmitter Soft Reset"]
+        pub type TXSR_W<'a, REG> = crate::BitWriter<'a, REG>;
         #[doc = "Field `DMAMODE` writer - DMA Mode"]
         pub type DMAMODE_W<'a, REG> = crate::BitWriter<'a, REG>;
-        #[doc = "Field `TXEMPTYTRIG` reader - TX Empty Trigger"]
-        pub type TXEMPTYTRIG_R = crate::FieldReader;
         #[doc = "Field `TXEMPTYTRIG` writer - TX Empty Trigger"]
         pub type TXEMPTYTRIG_W<'a, REG> = crate::FieldWriter<'a, REG, 2>;
-        #[doc = "Field `RXTRIG` reader - RX Trigger"]
-        pub type RXTRIG_R = crate::FieldReader;
         #[doc = "Field `RXTRIG` writer - RX Trigger"]
         pub type RXTRIG_W<'a, REG> = crate::FieldWriter<'a, REG, 2>;
-        impl R {
-            #[doc = "Bit 0 - FIFO Enable"]
-            #[inline(always)]
-            pub fn fifoen(&self) -> FIFOEN_R {
-                FIFOEN_R::new((self.bits & 1) != 0)
-            }
-            #[doc = "Bit 1 - RX FIFO Reset"]
-            #[inline(always)]
-            pub fn rxfiforst(&self) -> RXFIFORST_R {
-                RXFIFORST_R::new(((self.bits >> 1) & 1) != 0)
-            }
-            #[doc = "Bit 2 - TX FIFO Reset"]
-            #[inline(always)]
-            pub fn txfiforst(&self) -> TXFIFORST_R {
-                TXFIFORST_R::new(((self.bits >> 2) & 1) != 0)
-            }
-            #[doc = "Bit 3 - DMA Mode"]
-            #[inline(always)]
-            pub fn dmamode(&self) -> DMAMODE_R {
-                DMAMODE_R::new(((self.bits >> 3) & 1) != 0)
-            }
-            #[doc = "Bits 4:5 - TX Empty Trigger"]
-            #[inline(always)]
-            pub fn txemptytrig(&self) -> TXEMPTYTRIG_R {
-                TXEMPTYTRIG_R::new(((self.bits >> 4) & 3) as u8)
-            }
-            #[doc = "Bits 6:7 - RX Trigger"]
-            #[inline(always)]
-            pub fn rxtrig(&self) -> RXTRIG_R {
-                RXTRIG_R::new(((self.bits >> 6) & 3) as u8)
+        impl core::fmt::Debug for crate::generic::Reg<FCR_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                write!(f, "(not readable)")
             }
         }
         impl W {
@@ -1374,17 +1431,17 @@ module"]
             pub fn fifoen(&mut self) -> FIFOEN_W<FCR_SPEC> {
                 FIFOEN_W::new(self, 0)
             }
-            #[doc = "Bit 1 - RX FIFO Reset"]
+            #[doc = "Bit 1 - Receiver Soft Reset"]
             #[inline(always)]
             #[must_use]
-            pub fn rxfiforst(&mut self) -> RXFIFORST_W<FCR_SPEC> {
-                RXFIFORST_W::new(self, 1)
+            pub fn rxsr(&mut self) -> RXSR_W<FCR_SPEC> {
+                RXSR_W::new(self, 1)
             }
-            #[doc = "Bit 2 - TX FIFO Reset"]
+            #[doc = "Bit 2 - Transmitter Soft Reset"]
             #[inline(always)]
             #[must_use]
-            pub fn txfiforst(&mut self) -> TXFIFORST_W<FCR_SPEC> {
-                TXFIFORST_W::new(self, 2)
+            pub fn txsr(&mut self) -> TXSR_W<FCR_SPEC> {
+                TXSR_W::new(self, 2)
             }
             #[doc = "Bit 3 - DMA Mode"]
             #[inline(always)]
@@ -1415,13 +1472,11 @@ module"]
                 self
             }
         }
-        #[doc = "FIFO Control Register\n\nYou can [`read`](crate::generic::Reg::read) this register and get [`fcr::R`](R).  You can [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`write_with_zero`](crate::generic::Reg::write_with_zero) this register using [`fcr::W`](W). You can also [`modify`](crate::generic::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        #[doc = "FIFO Control Register\n\nYou can [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`write_with_zero`](crate::generic::Reg::write_with_zero) this register using [`fcr::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct FCR_SPEC;
         impl crate::RegisterSpec for FCR_SPEC {
             type Ux = u32;
         }
-        #[doc = "`read()` method returns [`fcr::R`](R) reader structure"]
-        impl crate::Readable for FCR_SPEC {}
         #[doc = "`write(|w| ..)` method takes [`fcr::W`](W) writer structure"]
         impl crate::Writable for FCR_SPEC {
             const ZERO_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
@@ -1432,23 +1487,17 @@ module"]
             const RESET_VALUE: u32 = 0;
         }
     }
-    #[doc = "IIR (rw) register accessor: Interrupt Identification Register\n\nYou can [`read`](crate::generic::Reg::read) this register and get [`iir::R`].  You can [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`write_with_zero`](crate::generic::Reg::write_with_zero) this register using [`iir::W`]. You can also [`modify`](crate::generic::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@iir`]
+    #[doc = "IIR (r) register accessor: Interrupt Identification Register\n\nYou can [`read`](crate::generic::Reg::read) this register and get [`iir::R`].  See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@iir`]
 module"]
     pub type IIR = crate::Reg<iir::IIR_SPEC>;
     #[doc = "Interrupt Identification Register"]
     pub mod iir {
         #[doc = "Register `IIR` reader"]
         pub type R = crate::R<IIR_SPEC>;
-        #[doc = "Register `IIR` writer"]
-        pub type W = crate::W<IIR_SPEC>;
         #[doc = "Field `INTRID` reader - Interrupt ID"]
         pub type INTRID_R = crate::FieldReader;
-        #[doc = "Field `INTRID` writer - Interrupt ID"]
-        pub type INTRID_W<'a, REG> = crate::FieldWriter<'a, REG, 4>;
         #[doc = "Field `FIFOEN` reader - FIFOs Enabled"]
         pub type FIFOEN_R = crate::FieldReader;
-        #[doc = "Field `FIFOEN` writer - FIFOs Enabled"]
-        pub type FIFOEN_W<'a, REG> = crate::FieldWriter<'a, REG, 2>;
         impl R {
             #[doc = "Bits 0:3 - Interrupt ID"]
             #[inline(always)]
@@ -1461,42 +1510,26 @@ module"]
                 FIFOEN_R::new(((self.bits >> 6) & 3) as u8)
             }
         }
-        impl W {
-            #[doc = "Bits 0:3 - Interrupt ID"]
-            #[inline(always)]
-            #[must_use]
-            pub fn intrid(&mut self) -> INTRID_W<IIR_SPEC> {
-                INTRID_W::new(self, 0)
-            }
-            #[doc = "Bits 6:7 - FIFOs Enabled"]
-            #[inline(always)]
-            #[must_use]
-            pub fn fifoen(&mut self) -> FIFOEN_W<IIR_SPEC> {
-                FIFOEN_W::new(self, 6)
-            }
-            #[doc = r" Writes raw bits to the register."]
-            #[doc = r""]
-            #[doc = r" # Safety"]
-            #[doc = r""]
-            #[doc = r" Passing incorrect value can cause undefined behaviour. See reference manual"]
-            #[inline(always)]
-            pub unsafe fn bits(&mut self, bits: u32) -> &mut Self {
-                self.bits = bits;
-                self
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("IIR")
+                    .field("intrid", &format_args!("{}", self.intrid().bits()))
+                    .field("fifoen", &format_args!("{}", self.fifoen().bits()))
+                    .finish()
             }
         }
-        #[doc = "Interrupt Identification Register\n\nYou can [`read`](crate::generic::Reg::read) this register and get [`iir::R`](R).  You can [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`write_with_zero`](crate::generic::Reg::write_with_zero) this register using [`iir::W`](W). You can also [`modify`](crate::generic::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+        impl core::fmt::Debug for crate::generic::Reg<IIR_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
+            }
+        }
+        #[doc = "Interrupt Identification Register\n\nYou can [`read`](crate::generic::Reg::read) this register and get [`iir::R`](R).  See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
         pub struct IIR_SPEC;
         impl crate::RegisterSpec for IIR_SPEC {
             type Ux = u32;
         }
         #[doc = "`read()` method returns [`iir::R`](R) reader structure"]
         impl crate::Readable for IIR_SPEC {}
-        #[doc = "`write(|w| ..)` method takes [`iir::W`](W) writer structure"]
-        impl crate::Writable for IIR_SPEC {
-            const ZERO_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
-            const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
-        }
         #[doc = "`reset()` method sets IIR to value 0"]
         impl crate::Resettable for IIR_SPEC {
             const RESET_VALUE: u32 = 0;
@@ -1527,14 +1560,14 @@ module"]
         pub type EPS_R = crate::BitReader;
         #[doc = "Field `EPS` writer - Even Parity Select"]
         pub type EPS_W<'a, REG> = crate::BitWriter<'a, REG>;
-        #[doc = "Field `STICKPAR` reader - Stick Parity"]
-        pub type STICKPAR_R = crate::BitReader;
-        #[doc = "Field `STICKPAR` writer - Stick Parity"]
-        pub type STICKPAR_W<'a, REG> = crate::BitWriter<'a, REG>;
-        #[doc = "Field `BRK` reader - Break Control"]
-        pub type BRK_R = crate::BitReader;
-        #[doc = "Field `BRK` writer - Break Control"]
-        pub type BRK_W<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `STKP` reader - Stick Parity"]
+        pub type STKP_R = crate::BitReader;
+        #[doc = "Field `STKP` writer - Stick Parity"]
+        pub type STKP_W<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `SBRK` reader - Break Control Set Break"]
+        pub type SBRK_R = crate::BitReader;
+        #[doc = "Field `SBRK` writer - Break Control Set Break"]
+        pub type SBRK_W<'a, REG> = crate::BitWriter<'a, REG>;
         #[doc = "Field `DLAB` reader - Divisor Latch Access Bit"]
         pub type DLAB_R = crate::BitReader;
         #[doc = "Field `DLAB` writer - Divisor Latch Access Bit"]
@@ -1562,18 +1595,36 @@ module"]
             }
             #[doc = "Bit 5 - Stick Parity"]
             #[inline(always)]
-            pub fn stickpar(&self) -> STICKPAR_R {
-                STICKPAR_R::new(((self.bits >> 5) & 1) != 0)
+            pub fn stkp(&self) -> STKP_R {
+                STKP_R::new(((self.bits >> 5) & 1) != 0)
             }
-            #[doc = "Bit 6 - Break Control"]
+            #[doc = "Bit 6 - Break Control Set Break"]
             #[inline(always)]
-            pub fn brk(&self) -> BRK_R {
-                BRK_R::new(((self.bits >> 6) & 1) != 0)
+            pub fn sbrk(&self) -> SBRK_R {
+                SBRK_R::new(((self.bits >> 6) & 1) != 0)
             }
             #[doc = "Bit 7 - Divisor Latch Access Bit"]
             #[inline(always)]
             pub fn dlab(&self) -> DLAB_R {
                 DLAB_R::new(((self.bits >> 7) & 1) != 0)
+            }
+        }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("LCR")
+                    .field("wls", &format_args!("{}", self.wls().bits()))
+                    .field("stb", &format_args!("{}", self.stb().bit()))
+                    .field("pen", &format_args!("{}", self.pen().bit()))
+                    .field("eps", &format_args!("{}", self.eps().bit()))
+                    .field("stkp", &format_args!("{}", self.stkp().bit()))
+                    .field("sbrk", &format_args!("{}", self.sbrk().bit()))
+                    .field("dlab", &format_args!("{}", self.dlab().bit()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<LCR_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
             }
         }
         impl W {
@@ -1604,14 +1655,14 @@ module"]
             #[doc = "Bit 5 - Stick Parity"]
             #[inline(always)]
             #[must_use]
-            pub fn stickpar(&mut self) -> STICKPAR_W<LCR_SPEC> {
-                STICKPAR_W::new(self, 5)
+            pub fn stkp(&mut self) -> STKP_W<LCR_SPEC> {
+                STKP_W::new(self, 5)
             }
-            #[doc = "Bit 6 - Break Control"]
+            #[doc = "Bit 6 - Break Control Set Break"]
             #[inline(always)]
             #[must_use]
-            pub fn brk(&mut self) -> BRK_W<LCR_SPEC> {
-                BRK_W::new(self, 6)
+            pub fn sbrk(&mut self) -> SBRK_W<LCR_SPEC> {
+                SBRK_W::new(self, 6)
             }
             #[doc = "Bit 7 - Divisor Latch Access Bit"]
             #[inline(always)]
@@ -1656,6 +1707,10 @@ module"]
         pub type R = crate::R<MCR_SPEC>;
         #[doc = "Register `MCR` writer"]
         pub type W = crate::W<MCR_SPEC>;
+        #[doc = "Field `DTR` reader - Data Terminal Ready"]
+        pub type DTR_R = crate::BitReader;
+        #[doc = "Field `DTR` writer - Data Terminal Ready"]
+        pub type DTR_W<'a, REG> = crate::BitWriter<'a, REG>;
         #[doc = "Field `RTS` reader - Request to Send"]
         pub type RTS_R = crate::BitReader;
         #[doc = "Field `RTS` writer - Request to Send"]
@@ -1665,6 +1720,11 @@ module"]
         #[doc = "Field `AFCE` writer - Auto Flow Control Enable"]
         pub type AFCE_W<'a, REG> = crate::BitWriter<'a, REG>;
         impl R {
+            #[doc = "Bit 0 - Data Terminal Ready"]
+            #[inline(always)]
+            pub fn dtr(&self) -> DTR_R {
+                DTR_R::new((self.bits & 1) != 0)
+            }
             #[doc = "Bit 1 - Request to Send"]
             #[inline(always)]
             pub fn rts(&self) -> RTS_R {
@@ -1676,7 +1736,27 @@ module"]
                 AFCE_R::new(((self.bits >> 6) & 1) != 0)
             }
         }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("MCR")
+                    .field("dtr", &format_args!("{}", self.dtr().bit()))
+                    .field("rts", &format_args!("{}", self.rts().bit()))
+                    .field("afce", &format_args!("{}", self.afce().bit()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<MCR_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
+            }
+        }
         impl W {
+            #[doc = "Bit 0 - Data Terminal Ready"]
+            #[inline(always)]
+            #[must_use]
+            pub fn dtr(&mut self) -> DTR_W<MCR_SPEC> {
+                DTR_W::new(self, 0)
+            }
             #[doc = "Bit 1 - Request to Send"]
             #[inline(always)]
             #[must_use]
@@ -1750,6 +1830,14 @@ module"]
         pub type THRE_R = crate::BitReader;
         #[doc = "Field `THRE` writer - Transmitter Holding Register Empty"]
         pub type THRE_W<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `TEMT` reader - Transmitter Empty"]
+        pub type TEMT_R = crate::BitReader;
+        #[doc = "Field `TEMT` writer - Transmitter Empty"]
+        pub type TEMT_W<'a, REG> = crate::BitWriter<'a, REG>;
+        #[doc = "Field `RFE` reader - Receiver FIFO Error"]
+        pub type RFE_R = crate::BitReader;
+        #[doc = "Field `RFE` writer - Receiver FIFO Error"]
+        pub type RFE_W<'a, REG> = crate::BitWriter<'a, REG>;
         impl R {
             #[doc = "Bit 0 - Data Ready"]
             #[inline(always)]
@@ -1780,6 +1868,35 @@ module"]
             #[inline(always)]
             pub fn thre(&self) -> THRE_R {
                 THRE_R::new(((self.bits >> 5) & 1) != 0)
+            }
+            #[doc = "Bit 6 - Transmitter Empty"]
+            #[inline(always)]
+            pub fn temt(&self) -> TEMT_R {
+                TEMT_R::new(((self.bits >> 6) & 1) != 0)
+            }
+            #[doc = "Bit 7 - Receiver FIFO Error"]
+            #[inline(always)]
+            pub fn rfe(&self) -> RFE_R {
+                RFE_R::new(((self.bits >> 7) & 1) != 0)
+            }
+        }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("LSR")
+                    .field("dr", &format_args!("{}", self.dr().bit()))
+                    .field("oe", &format_args!("{}", self.oe().bit()))
+                    .field("pe", &format_args!("{}", self.pe().bit()))
+                    .field("fe", &format_args!("{}", self.fe().bit()))
+                    .field("bi", &format_args!("{}", self.bi().bit()))
+                    .field("thre", &format_args!("{}", self.thre().bit()))
+                    .field("temt", &format_args!("{}", self.temt().bit()))
+                    .field("rfe", &format_args!("{}", self.rfe().bit()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<LSR_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
             }
         }
         impl W {
@@ -1818,6 +1935,18 @@ module"]
             #[must_use]
             pub fn thre(&mut self) -> THRE_W<LSR_SPEC> {
                 THRE_W::new(self, 5)
+            }
+            #[doc = "Bit 6 - Transmitter Empty"]
+            #[inline(always)]
+            #[must_use]
+            pub fn temt(&mut self) -> TEMT_W<LSR_SPEC> {
+                TEMT_W::new(self, 6)
+            }
+            #[doc = "Bit 7 - Receiver FIFO Error"]
+            #[inline(always)]
+            #[must_use]
+            pub fn rfe(&mut self) -> RFE_W<LSR_SPEC> {
+                RFE_W::new(self, 7)
             }
             #[doc = r" Writes raw bits to the register."]
             #[doc = r""]
@@ -1874,6 +2003,19 @@ module"]
             #[inline(always)]
             pub fn cts(&self) -> CTS_R {
                 CTS_R::new(((self.bits >> 4) & 1) != 0)
+            }
+        }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("MSR")
+                    .field("cts", &format_args!("{}", self.cts().bit()))
+                    .field("dsr", &format_args!("{}", self.dsr().bit()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<MSR_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
             }
         }
         impl W {
@@ -1937,6 +2079,18 @@ module"]
                 LPDLL_R::new((self.bits & 0xff) as u8)
             }
         }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("LPDLL")
+                    .field("lpdll", &format_args!("{}", self.lpdll().bits()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<LPDLL_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
+            }
+        }
         impl W {
             #[doc = "Bits 0:7"]
             #[inline(always)]
@@ -1990,6 +2144,18 @@ module"]
             #[inline(always)]
             pub fn lpdlh(&self) -> LPDLH_R {
                 LPDLH_R::new((self.bits & 0xff) as u8)
+            }
+        }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("LPDLH")
+                    .field("lpdlh", &format_args!("{}", self.lpdlh().bits()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<LPDLH_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
             }
         }
         impl W {
@@ -2047,6 +2213,18 @@ module"]
                 SRBR_R::new((self.bits & 0xff) as u8)
             }
         }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("SRBR")
+                    .field("srbr", &format_args!("{}", self.srbr().bits()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<SRBR_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
+            }
+        }
         impl W {
             #[doc = "Bits 0:7"]
             #[inline(always)]
@@ -2100,6 +2278,18 @@ module"]
             #[inline(always)]
             pub fn sthr(&self) -> STHR_R {
                 STHR_R::new((self.bits & 0xff) as u8)
+            }
+        }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("STHR")
+                    .field("sthr", &format_args!("{}", self.sthr().bits()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<STHR_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
             }
         }
         impl W {
@@ -2157,6 +2347,18 @@ module"]
                 FAR_R::new((self.bits & 0xff) as u8)
             }
         }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("FAR")
+                    .field("far", &format_args!("{}", self.far().bits()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<FAR_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
+            }
+        }
         impl W {
             #[doc = "Bits 0:7"]
             #[inline(always)]
@@ -2210,6 +2412,18 @@ module"]
             #[inline(always)]
             pub fn tfr(&self) -> TFR_R {
                 TFR_R::new((self.bits & 0xff) as u8)
+            }
+        }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("TFR")
+                    .field("tfr", &format_args!("{}", self.tfr().bits()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<TFR_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
             }
         }
         impl W {
@@ -2283,6 +2497,20 @@ module"]
             #[inline(always)]
             pub fn rfe(&self) -> RFE_R {
                 RFE_R::new(((self.bits >> 9) & 1) != 0)
+            }
+        }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("RFW")
+                    .field("rfw", &format_args!("{}", self.rfw().bits()))
+                    .field("rpe", &format_args!("{}", self.rpe().bit()))
+                    .field("rfe", &format_args!("{}", self.rfe().bit()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<RFW_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
             }
         }
         impl W {
@@ -2388,6 +2616,22 @@ module"]
                 RFF_R::new(((self.bits >> 4) & 1) != 0)
             }
         }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("USR")
+                    .field("busy", &format_args!("{}", self.busy().bit()))
+                    .field("tfnf", &format_args!("{}", self.tfnf().bit()))
+                    .field("tfe", &format_args!("{}", self.tfe().bit()))
+                    .field("rfne", &format_args!("{}", self.rfne().bit()))
+                    .field("rff", &format_args!("{}", self.rff().bit()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<USR_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
+            }
+        }
         impl W {
             #[doc = "Bit 0 - UART Busy"]
             #[inline(always)]
@@ -2467,6 +2711,18 @@ module"]
                 TFL_R::new((self.bits & 0xff) as u8)
             }
         }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("TFL")
+                    .field("tfl", &format_args!("{}", self.tfl().bits()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<TFL_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
+            }
+        }
         impl W {
             #[doc = "Bits 0:7"]
             #[inline(always)]
@@ -2520,6 +2776,18 @@ module"]
             #[inline(always)]
             pub fn srr(&self) -> SRR_R {
                 SRR_R::new((self.bits & 0xff) as u8)
+            }
+        }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("SRR")
+                    .field("srr", &format_args!("{}", self.srr().bits()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<SRR_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
             }
         }
         impl W {
@@ -2577,6 +2845,18 @@ module"]
                 SRTS_R::new((self.bits & 1) != 0)
             }
         }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("SRTS")
+                    .field("srts", &format_args!("{}", self.srts().bit()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<SRTS_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
+            }
+        }
         impl W {
             #[doc = "Bit 0"]
             #[inline(always)]
@@ -2630,6 +2910,18 @@ module"]
             #[inline(always)]
             pub fn sbcr(&self) -> SBCR_R {
                 SBCR_R::new((self.bits & 1) != 0)
+            }
+        }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("SBCR")
+                    .field("sbcr", &format_args!("{}", self.sbcr().bit()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<SBCR_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
             }
         }
         impl W {
@@ -2687,6 +2979,18 @@ module"]
                 SDMAM_R::new((self.bits & 1) != 0)
             }
         }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("SDMAM")
+                    .field("sdmam", &format_args!("{}", self.sdmam().bit()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<SDMAM_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
+            }
+        }
         impl W {
             #[doc = "Bit 0"]
             #[inline(always)]
@@ -2740,6 +3044,18 @@ module"]
             #[inline(always)]
             pub fn sfe(&self) -> SFE_R {
                 SFE_R::new((self.bits & 1) != 0)
+            }
+        }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("SFE")
+                    .field("sfe", &format_args!("{}", self.sfe().bit()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<SFE_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
             }
         }
         impl W {
@@ -2797,6 +3113,18 @@ module"]
                 SRT_R::new((self.bits & 3) as u8)
             }
         }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("SRT")
+                    .field("srt", &format_args!("{}", self.srt().bits()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<SRT_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
+            }
+        }
         impl W {
             #[doc = "Bits 0:1"]
             #[inline(always)]
@@ -2850,6 +3178,18 @@ module"]
             #[inline(always)]
             pub fn stet(&self) -> STET_R {
                 STET_R::new((self.bits & 3) as u8)
+            }
+        }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("STET")
+                    .field("stet", &format_args!("{}", self.stet().bits()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<STET_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
             }
         }
         impl W {
@@ -2907,6 +3247,18 @@ module"]
                 HTX_R::new((self.bits & 1) != 0)
             }
         }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("HTX")
+                    .field("htx", &format_args!("{}", self.htx().bit()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<HTX_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
+            }
+        }
         impl W {
             #[doc = "Bit 0"]
             #[inline(always)]
@@ -2960,6 +3312,18 @@ module"]
             #[inline(always)]
             pub fn dmasa(&self) -> DMASA_R {
                 DMASA_R::new((self.bits & 1) != 0)
+            }
+        }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("DMASA")
+                    .field("dmasa", &format_args!("{}", self.dmasa().bit()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<DMASA_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
             }
         }
         impl W {
@@ -3174,12 +3538,12 @@ impl core::fmt::Debug for UART4 {
 }
 #[doc = "UART4"]
 pub use self::uart0 as uart4;
-#[doc = "RTCSYS_UART"]
-pub struct RTCSYS_UART {
+#[doc = "PWR_UART"]
+pub struct PWR_UART {
     _marker: PhantomData<*const ()>,
 }
-unsafe impl Send for RTCSYS_UART {}
-impl RTCSYS_UART {
+unsafe impl Send for PWR_UART {}
+impl PWR_UART {
     #[doc = r"Pointer to the register block"]
     pub const PTR: *const uart0::RegisterBlock = 0x0502_2000 as *const _;
     #[doc = r"Return the pointer to the register block"]
@@ -3204,20 +3568,20 @@ impl RTCSYS_UART {
         Self { _marker: PhantomData }
     }
 }
-impl Deref for RTCSYS_UART {
+impl Deref for PWR_UART {
     type Target = uart0::RegisterBlock;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         unsafe { &*Self::PTR }
     }
 }
-impl core::fmt::Debug for RTCSYS_UART {
+impl core::fmt::Debug for PWR_UART {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("RTCSYS_UART").finish()
+        f.debug_struct("PWR_UART").finish()
     }
 }
-#[doc = "RTCSYS_UART"]
-pub use self::uart0 as rtcsys_uart;
+#[doc = "PWR_UART"]
+pub use self::uart0 as pwr_uart;
 #[doc = "GPIO0"]
 pub struct GPIO0 {
     _marker: PhantomData<*const ()>,
@@ -3264,6 +3628,7 @@ impl core::fmt::Debug for GPIO0 {
 pub mod gpio0 {
     #[doc = r"Register block"]
     #[repr(C)]
+    #[derive(Debug)]
     pub struct RegisterBlock {
         dr: DR,
         ddr: DDR,
@@ -3890,6 +4255,18 @@ module"]
                 LS_SYNC_R::new((self.bits & 1) != 0)
             }
         }
+        impl core::fmt::Debug for R {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct("LS_SYNC")
+                    .field("ls_sync", &format_args!("{}", self.ls_sync().bit()))
+                    .finish()
+            }
+        }
+        impl core::fmt::Debug for crate::generic::Reg<LS_SYNC_SPEC> {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.read(), f)
+            }
+        }
         impl W {
             #[doc = "Bit 0 - Level-sensitive synchronization enable"]
             #[inline(always)]
@@ -4129,8 +4506,8 @@ pub struct Peripherals {
     pub UART3: UART3,
     #[doc = "UART4"]
     pub UART4: UART4,
-    #[doc = "RTCSYS_UART"]
-    pub RTCSYS_UART: RTCSYS_UART,
+    #[doc = "PWR_UART"]
+    pub PWR_UART: PWR_UART,
     #[doc = "GPIO0"]
     pub GPIO0: GPIO0,
     #[doc = "GPIO1"]
@@ -4174,7 +4551,7 @@ impl Peripherals {
             UART2: UART2 { _marker: PhantomData },
             UART3: UART3 { _marker: PhantomData },
             UART4: UART4 { _marker: PhantomData },
-            RTCSYS_UART: RTCSYS_UART { _marker: PhantomData },
+            PWR_UART: PWR_UART { _marker: PhantomData },
             GPIO0: GPIO0 { _marker: PhantomData },
             GPIO1: GPIO1 { _marker: PhantomData },
             GPIO2: GPIO2 { _marker: PhantomData },

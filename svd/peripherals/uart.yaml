@@ -51,15 +51,15 @@ _add:
         access: "read-write"
         resetValue: 0x0
         fields:
-          ERBFI:
+          RDI:
             bitOffset: 0
             bitWidth: 1
             description: "Enable Received Data Available Interrupt"
-          ETBEI:
+          THRI:
             bitOffset: 1
             bitWidth: 1
             description: "Enable Transmitter Holding Register Empty Interrupt"
-          ELSI:
+          RLSI:
             bitOffset: 2
             bitWidth: 1
             description: "Enable Receiver Line Status Interrupt"
@@ -86,21 +86,21 @@ _add:
         addressOffset: 0x8
         size: 32
         description: "FIFO Control Register"
-        access: "read-write"
+        access: "write-only"
         resetValue: 0x0
         fields:
           FIFOEN:
             bitOffset: 0
             bitWidth: 1
             description: "FIFO Enable"
-          RXFIFORST:
+          RXSR:
             bitOffset: 1
             bitWidth: 1
-            description: "RX FIFO Reset"
-          TXFIFORST:
+            description: "Receiver Soft Reset"
+          TXSR:
             bitOffset: 2
             bitWidth: 1
-            description: "TX FIFO Reset"
+            description: "Transmitter Soft Reset"
           DMAMODE:
             bitOffset: 3
             bitWidth: 1
@@ -117,7 +117,7 @@ _add:
         addressOffset: 0x8
         size: 32
         description: "Interrupt Identification Register"
-        access: "read-write"
+        access: "read-only"
         resetValue: 0x0
         fields:
           INTRID:
@@ -151,14 +151,14 @@ _add:
             bitOffset: 4
             bitWidth: 1
             description: "Even Parity Select"
-          STICKPAR:
+          STKP:
             bitOffset: 5
             bitWidth: 1
             description: "Stick Parity"
-          BRK:
+          SBRK:
             bitOffset: 6
             bitWidth: 1
-            description: "Break Control"
+            description: "Break Control Set Break"
           DLAB:
             bitOffset: 7
             bitWidth: 1
@@ -170,6 +170,10 @@ _add:
         access: "read-write"
         resetValue: 0x0
         fields:
+          DTR:
+            bitOffset: 0
+            bitWidth: 1
+            description: "Data Terminal Ready"
           RTS:
             bitOffset: 1
             bitWidth: 1
@@ -209,6 +213,14 @@ _add:
             bitOffset: 5
             bitWidth: 1
             description: "Transmitter Holding Register Empty"
+          TEMT:
+            bitOffset: 6
+            bitWidth: 1
+            description: "Transmitter Empty"
+          RFE:
+            bitOffset: 7
+            bitWidth: 1
+            description: "Receiver FIFO Error"
       MSR:
         addressOffset: 0x18
         size: 32
@@ -459,10 +471,10 @@ _add:
       UART4:
         description: "UART4 interrupt"
         value: 64
-  RTCSYS_UART:
+  PWR_UART:
     derivedFrom: UART0
     baseAddress: 0x05022000
     interrupts:
-      UART_RTC:
+      PWR_UART:
         description: "RTCSYS UART interrupt"
         value: 87
