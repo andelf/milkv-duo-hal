@@ -225,6 +225,7 @@ pub trait Pin: Peripheral<P = Self> + Into<AnyPin> + sealed::Pin + Sized + 'stat
         self._ioport() as u8
     }
 
+    /// Set pinmux
     #[inline]
     fn set_alt_function(&self, func: u8) {
         self.fmux().func_sel().write(|w| w.value().variant(func));

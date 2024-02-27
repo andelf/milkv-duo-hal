@@ -41,12 +41,31 @@ impl<'d, T: Instance> Uart<'d, T> {
         tx.set_pull(Pull::Down);
         rx.set_pull(Pull::Down);
 
+        let uart = T::regs();
+
+        while !uart.lsr().read().temt().bit() {
+            core::hint::spin_loop();
+        }
+
+        uart.ier().write(|w| unsafe { w.bits(0x00) });
+        uart.mcr().write(|w| w.dtr().set_bit().rts().set_bit()); // default
+        uart.fcr()
+            .write(|w| w.fifoen().set_bit().rxsr().set_bit().txsr().set_bit());
+
+        // 8N1
+        loop {
+            uart.lcr()
+                .modify(|_, w| unsafe { w.stb().clear_bit().pen().clear_bit().wls().bits(0b11) });
+            if uart.lcr().read().stb().bit_is_clear() && uart.lcr().read().pen().bit_is_clear() {
+                break;
+            }
+        }
+
         let uart_clock = 25_000_000;
         // let divisor = uart_clock / (16 * config.baudrate);
         // avoid rounding
         let divisor = (uart_clock + config.baudrate * 8) / (config.baudrate * 16);
 
-        let uart = T::regs();
         // Make sure LCR write wasn't ignored
         loop {
             uart.lcr().modify(|_, w| w.dlab().set_bit());
@@ -61,15 +80,6 @@ impl<'d, T: Instance> Uart<'d, T> {
         loop {
             uart.lcr().modify(|_, w| w.dlab().clear_bit());
             if uart.lcr().read().dlab().bit_is_clear() {
-                break;
-            }
-        }
-
-        // 8N1
-        loop {
-            uart.lcr()
-                .modify(|_, w| unsafe { w.stb().clear_bit().pen().clear_bit().wls().bits(0b11) });
-            if uart.lcr().read().stb().bit_is_clear() && uart.lcr().read().pen().bit_is_clear() {
                 break;
             }
         }
