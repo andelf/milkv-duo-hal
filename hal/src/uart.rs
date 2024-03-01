@@ -87,29 +87,6 @@ impl<'d, T: Instance> Uart<'d, T> {
         Self { phantom: PhantomData }
     }
 
-    //
-    fn write_lcr(&self, val: u32) {
-        let mut tries = 1000;
-        let uart = T::regs();
-        const UART_LCR_STKP: u8 = 0x5; // 0x20
-        const NON_STKP_MASK: u32 = !(1 << UART_LCR_STKP);
-
-        while tries > 0 {
-            uart.lcr().write(|w| unsafe { w.bits(val) });
-
-            if uart.lcr().read().bits() & NON_STKP_MASK == val & NON_STKP_MASK {
-                break;
-            }
-
-            // FCR_DEF_VAL
-            uart.fcr()
-                .write(|w| w.fifoen().set_bit().rxsr().set_bit().txsr().set_bit());
-            let _ = uart.rbr().read().bits();
-
-            tries -= 1;
-        }
-    }
-
     fn check_error(&self) -> Result<(), Error> {
         let uart = T::regs();
         let lsr = uart.lsr().read();
